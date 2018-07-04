@@ -1,21 +1,22 @@
 package io.dropwizard.hibernate.multitenant;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.db.DataSourceFactory;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.Map;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public final class Tenant {
 
     @Getter
-    private final String id;
+    @JsonProperty
+    private String id;
 
     @Getter
-    private final Map<String, DataSourceFactory> databases;
-
-    public Tenant(String id, Map<String, DataSourceFactory> databases) {
-        this.id = id;
-        this.databases = new HashMap<>(databases);
-    }
+    @JsonProperty
+    private Map<String, DataSourceFactory> databases;
 }
