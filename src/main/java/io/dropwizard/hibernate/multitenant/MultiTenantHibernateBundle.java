@@ -72,7 +72,7 @@ public abstract class MultiTenantHibernateBundle<T extends Configuration>
             Map<String, SessionFactory> tenantSessionFactoryMap = new HashMap<>();
             for(Map.Entry<String, DataSourceFactory> entry: tenant.getDatabases().entrySet()) {
                 PooledDataSourceFactory dataSourceFactory = entry.getValue();
-                String name = entry.getKey();
+                String name = String.format("%s-%s", tenant.getId(), entry.getKey());
                 SessionFactory sessionFactory = this.sessionFactoryFactory.build(
                         this, environment, dataSourceFactory, entities, name);
                 tenantSessionFactoryMap.put(name, sessionFactory);

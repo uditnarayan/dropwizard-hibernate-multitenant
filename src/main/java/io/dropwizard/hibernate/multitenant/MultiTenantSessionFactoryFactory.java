@@ -2,6 +2,7 @@ package io.dropwizard.hibernate.multitenant;
 
 import io.dropwizard.db.ManagedDataSource;
 import io.dropwizard.db.PooledDataSourceFactory;
+import io.dropwizard.hibernate.SessionFactoryManager;
 import io.dropwizard.setup.Environment;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
@@ -50,8 +51,8 @@ public class MultiTenantSessionFactoryFactory {
                 provider,
                 dbConfig.getProperties(),
                 entities);
-        // final SessionFactoryManager managedFactory = new SessionFactoryManager(factory, dataSource);
-        // environment.lifecycle().manage(managedFactory);
+        final SessionFactoryManager managedFactory = new SessionFactoryManager(factory, dataSource);
+        environment.lifecycle().manage(managedFactory);
         return factory;
     }
 
