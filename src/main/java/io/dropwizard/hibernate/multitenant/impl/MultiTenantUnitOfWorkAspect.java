@@ -43,7 +43,6 @@ public class MultiTenantUnitOfWorkAspect {
         String database = Strings.isNullOrEmpty(unitOfWork.value())
                 ? String.format("%s-%s", tenantId, MultiTenantHibernateBundle.DEFAULT_NAME)
                 : String.format("%s-%s", tenantId, unitOfWork.value());
-
         this.sessionFactory = tenantSessionFactoryMap.getOrDefault(database, null);
         Preconditions.checkNotNull(this.sessionFactory);
         return sessionFactory;

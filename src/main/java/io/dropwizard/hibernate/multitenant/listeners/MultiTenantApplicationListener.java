@@ -1,6 +1,7 @@
 package io.dropwizard.hibernate.multitenant.listeners;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.hibernate.multitenant.ITenantResolver;
 import org.glassfish.jersey.server.model.ResourceMethod;
 import org.glassfish.jersey.server.monitoring.ApplicationEvent;
 import org.glassfish.jersey.server.monitoring.ApplicationEventListener;
@@ -15,15 +16,15 @@ import java.util.concurrent.ConcurrentMap;
 
 public class MultiTenantApplicationListener implements ApplicationEventListener {
 
-    private final String tenantHeader;
+    private final ITenantResolver tenantResolver;
 
     private final Map<String, Map<String, SessionFactory>> tenantDatabasesMap;
 
-    private ConcurrentMap<String, ConcurrentMap<ResourceMethod, Optional<UnitOfWork>>> tenantMethodMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<ResourceMethod, Optional<UnitOfWork>> resourceMethodMap = new ConcurrentHashMap<>();
 
-    public MultiTenantApplicationListener(String tenantHeader,
+    public MultiTenantApplicationListener(ITenantResolver tenantResolver,
                                           Map<String, Map<String, SessionFactory>> tenantDatabasesMap) {
-        this.tenantHeader = tenantHeader;
+        this.tenantResolver = tenantResolver;
         this.tenantDatabasesMap= tenantDatabasesMap;
     }
 
@@ -32,6 +33,6 @@ public class MultiTenantApplicationListener implements ApplicationEventListener 
 
     @Override
     public RequestEventListener onRequest(RequestEvent requestEvent) {
-        return new MultiTenantRequestListener(tenantHeader, tenantDatabasesMap, tenantMethodMap);
+        return new MultiTenantRequestListener(tenantResolver, tenantDatabasesMap, resourceMethodMap);
     }
 }

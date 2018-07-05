@@ -90,7 +90,7 @@ public abstract class MultiTenantHibernateBundle<T extends Configuration>
             }
         }
         final MultiTenantApplicationListener listener = new MultiTenantApplicationListener(
-                this.getTenantHeaderPropertyName(configuration), this.tenantDatabasesMap);
+                this.getTenantResolver(configuration), this.tenantDatabasesMap);
         environment.jersey().register(listener);
         return listener;
     }
