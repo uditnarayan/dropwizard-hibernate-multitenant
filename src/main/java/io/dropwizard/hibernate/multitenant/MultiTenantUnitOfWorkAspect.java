@@ -1,9 +1,9 @@
-package io.dropwizard.hibernate.multitenant.impl;
+package io.dropwizard.hibernate.multitenant;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.hibernate.multitenant.MultiTenantHibernateBundle;
 import io.dropwizard.hibernate.multitenant.contexts.TenantRequestContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 
 public class MultiTenantUnitOfWorkAspect {
 
-    private final Map<String, Map<String, SessionFactory>> tenantSessionFactoryMaps;
+    private final ImmutableMap<String, ImmutableMap<String, SessionFactory>> tenantSessionFactories;
 
     @Nullable
     private UnitOfWork unitOfWork;
@@ -28,17 +28,17 @@ public class MultiTenantUnitOfWorkAspect {
     @Nullable
     private SessionFactory sessionFactory;
 
-    public MultiTenantUnitOfWorkAspect(Map<String, Map<String, SessionFactory>> tenantSessionFactoryMaps) {
-        this.tenantSessionFactoryMaps = tenantSessionFactoryMaps;
+    public MultiTenantUnitOfWorkAspect(ImmutableMap<String, ImmutableMap<String, SessionFactory>> tenantSessionFactories) {
+        this.tenantSessionFactories = tenantSessionFactories;
     }
 
     private SessionFactory getTenantSessionFactory(String tenantId, UnitOfWork unitOfWork) {
-        if (!this.tenantSessionFactoryMaps.containsKey(tenantId)) {
+        if (!this.tenantSessionFactories.containsKey(tenantId)) {
             String msg = String.format("Invalid tenant %s provided.", tenantId);
             throw new IllegalArgumentException(msg);
         }
         Map<String, SessionFactory> tenantSessionFactoryMap =
-                this.tenantSessionFactoryMaps.getOrDefault(tenantId, null);
+                this.tenantSessionFactories.getOrDefault(tenantId, null);
         Preconditions.checkNotNull(tenantSessionFactoryMap);
 
         String database = Strings.isNullOrEmpty(unitOfWork.value())
@@ -49,12 +49,14 @@ public class MultiTenantUnitOfWorkAspect {
         return sessionFactory;
     }
 
-    public void beforeStart(String tenantId, @Nullable UnitOfWork unitOfWork) {
+    public void beforeStart(@Nullable UnitOfWork unitOfWork) {
         if (unitOfWork == null) {
             return;
         }
+        Tenant tenant = TenantRequestContext.TENANT.get();
+        requireNonNull(tenant);
         this.unitOfWork = unitOfWork;
-        this.sessionFactory = this.getTenantSessionFactory(tenantId, unitOfWork);
+        this.sessionFactory = this.getTenantSessionFactory(tenant.getId(), unitOfWork);
         this.session = this.sessionFactory.openSession();
         try {
             configureSession();
