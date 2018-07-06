@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.hibernate.multitenant.MultiTenantHibernateBundle;
+import io.dropwizard.hibernate.multitenant.contexts.TenantRequestContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -58,6 +59,7 @@ public class MultiTenantUnitOfWorkAspect {
         try {
             configureSession();
             ManagedSessionContext.bind(this.session);
+            TenantRequestContext.HIBERNATE_SESSION_FACTORY.set(this.sessionFactory);
             beginTransaction(this.unitOfWork, this.session);
         } catch (Throwable th) {
             this.onFinish();
@@ -99,6 +101,7 @@ public class MultiTenantUnitOfWorkAspect {
             }
         } finally {
             this.session = null;
+            TenantRequestContext.HIBERNATE_SESSION_FACTORY.remove();
             ManagedSessionContext.unbind(sessionFactory);
         }
     }
