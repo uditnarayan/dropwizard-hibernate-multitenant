@@ -18,5 +18,9 @@ public final class Tenant {
 
     @Getter
     @JsonProperty
+    private Map<String, String> properties;
+
+    @Getter
+    @JsonProperty
     private Map<String, DataSourceFactory> databases;
 }
