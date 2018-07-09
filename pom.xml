@@ -6,7 +6,7 @@
 
     <groupId>org.clojars.uditnarayan.dropwizard</groupId>
     <artifactId>dropwizard-hibernate-multitenant</artifactId>
-    <version>1.2.2-BETA</version>
+    <version>1.2.2-BETA-1</version>
 
     <properties>
         <dropwizard.version>1.2.2</dropwizard.version>
@@ -22,6 +22,13 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/uditnarayan/dropwizard-hibernate-multitenant</connection>
+        <developerConnection>scm:git:https://github.com/uditnarayan/dropwizard-hibernate-multitenant</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/uditnarayan/dropwizard-hibernate-multitenant</url>
+    </scm>
 
     <developers>
         <developer>
