@@ -1,6 +1,4 @@
 # Dropwizard Hibernate MultiTenant Bundle
-[![Clojars Project](https://img.shields.io/clojars/v/org.clojars.uditnarayan.dropwizard/dropwizard-hibernate-multitenant.svg)](https://clojars.org/org.clojars.uditnarayan.dropwizard/dropwizard-hibernate-multitenant)
-
 This project tries to solve the multitenancy problem for dropwizard from the point of keeping seperate schema or database per tenant.
 
 This project is under development, and I have started publishing beta releases. I am developing it as part of my work requirements to support multitenancy in our exisiting dropwizard based web service application. However, if you find this interesting enough and want to contribute, please write to me at info.udit90@gmail.com.
