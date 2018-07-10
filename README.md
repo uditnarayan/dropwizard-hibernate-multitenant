@@ -19,7 +19,7 @@ The dependency config is:
 <dependency>
   <groupId>org.clojars.uditnarayan.dropwizard</groupId>
   <artifactId>dropwizard-hibernate-multitenant</artifactId>
-  <version>1.2.2-BETA-1</version>
+  <version>1.2.2-BETA-2</version>
 </dependency>
 ```
 
