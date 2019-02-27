@@ -10,4 +10,6 @@ public interface MultiTenantDatabaseConfiguration<T extends Configuration> {
     List<Tenant> getTenants(T configuration);
 
     ITenantResolver getTenantResolver(T configuration);
+
+    T getApplicationConfiguration(T configuration);
 }
