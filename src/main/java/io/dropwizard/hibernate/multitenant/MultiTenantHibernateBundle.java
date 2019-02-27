@@ -113,9 +113,4 @@ public abstract class MultiTenantHibernateBundle<T extends Configuration>
     public ImmutableMap<String, ImmutableMap<String, SessionFactory>> getTenantSessionFactories() {
         return requireNonNull(this.tenantSessionFactories);
     }
-
-    @Override
-    public T getApplicationConfiguration(T configuration) {
-        return configuration;
-    }
 }
